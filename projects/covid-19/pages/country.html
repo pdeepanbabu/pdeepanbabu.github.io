@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+
+    <title>COVID Data</title>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-dark bg-info">
+      <a class="navbar-brand" href="/projects/covid-19/index.html">COVID Data</a>
+    </nav>
+
+    <div class="container-fluid">
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <h3  id="current-location"></h3>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="card text-center">
+                <div class="card-header">
+                  Total Cases
+                </div>
+                <div class="card-body" id="total_cases">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card text-center">
+                <div class="card-header">
+                  New Cases
+                </div>
+                <div class="card-body" id="new_cases">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card text-center">
+                <div class="card-header">
+                  Total Deaths
+                </div>
+                <div class="card-body" id="total_deaths">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card text-center">
+                <div class="card-header">
+                  New Deaths
+                </div>
+                <div class="card-body" id="new_deaths">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+            <!-- <div class="col-md-12 pt-4" id="world-map"></div> -->
+            <div class="col-md-12 pt-4">
+              <table class="table" id="country-table">
+                <thead class="bg-info" style="color:#fff">
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Total Cases</th>
+                    <th scope="col">Total Deaths</th>
+                    <th scope="col">New Cases</th>
+                    <th scope="col">New Deaths</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+
+      </div>
+    </div>
+
+    <div class="footer text-center text-muted pt-5">
+      <hr>
+      <p>2019 | Deepan Babu</p>
+      <p><a href="https://pdeepanbabu.github.io" class="text-decoration-none"><i class="fab fa-github"></i></a></p>
+      <hr>
+  </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        var options = {
+          series: [{
+          data: [1]
+        }],
+          chart: {
+          type: 'area',
+          height: 160,
+          sparkline: {
+            enabled: true
+          },
+        },
+        stroke: {
+          curve: 'straight',
+          width: 1
+        },
+        fill: {
+          opacity: 0.3,
+        },
+        yaxis: {
+          min: 0
+        },
+        title: {
+          text: '$424,652',
+          offsetX: 0,
+          style: {
+            fontSize: '24px',
+          }
+        },
+        };   
+
+        const url = (window.location.href).split('#')
+        let country = url[1]
+ 
+        async function fetchAPI(url){
+            const resp = await fetch(url)
+            const data = await resp.json()
+            return data
+        }
+
+        async function getData(){
+          const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
+          const data = covidData[country]['data']
+          const id = document.getElementById('current-location')
+          id.innerHTML = covidData[country]['location']
+          updateCountrydData(data)
+          createTable(data, 'country-table', ['date', 'total_cases', 'total_deaths', 'new_cases','new_deaths'])
+        }
+
+        function createTable(c, id, col){
+          const data = c
+          const table = document.getElementById(id)
+          const t = $(table).find('tbody')
+          data.forEach(element => {
+            const tr = document.createElement('tr')
+            col.forEach(tag => {
+                const td = document.createElement('td')
+                td.innerHTML = element[tag]
+                tr.appendChild(td)
+            });
+            t[0].appendChild(tr)
+          });
+          $(table).DataTable({
+            "order": [[ 0, "desc" ]]
+          })
+        }
+
+        function updateCountrydData(data){
+          const lastTotalCase = data[data.length - 1]
+          const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
+          plot.forEach(element => {
+            const el = document.getElementById(element)
+            el.innerHTML = lastTotalCase[element]
+          });
+        }
+
+        function getcolumns(c, d){
+          const data = d.map(function(item, index){return item[c]})
+          return data
+        }
+        getData()
+        
+    </script>
+  </body>
+</html>

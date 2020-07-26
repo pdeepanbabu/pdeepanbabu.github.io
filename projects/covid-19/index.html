@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+
+    <title>COVID Data</title>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-dark bg-info">
+      <a class="navbar-brand" href="/projects/covid-19/index.html">COVID Data</a>
+    </nav>
+
+    <div class="container-fluid">
+      <br>
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <p>Country: <a href="" class="text-decoration-none text-muted" id="current-location"></a></p>
+        </div>
+        <div class="col-md-12">
+          <h3>Total Coronovirus cases</h3>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-header text-right">
+                  Total Cases
+                </div>
+                <div class="card-body" id="total_cases">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-header text-right">
+                  New Cases
+                </div>
+                <div class="card-body" id="new_cases">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-header text-right">
+                  Total Deaths
+                </div>
+                <div class="card-body" id="total_deaths">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-header text-right">
+                  New Deaths
+                </div>
+                <div class="card-body" id="new_deaths">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+            <!-- <div class="col-md-12 pt-4" id="world-map"></div> -->
+            <div class="col-md-12 pt-4">
+              <table class="table" id="world-table">
+                <thead class="bg-info" style="color:#fff">
+                  <tr>
+                    <th scope="col">Country</th>
+                    <th scope="col">Total Cases</th>
+                    <th scope="col">Total Deaths</th>
+                    <th scope="col">New Cases</th>
+                    <th scope="col">Total Population</th>
+                    <th scope="col">Continent</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+
+      </div>
+    </div>
+
+    <div class="footer text-center text-muted pt-5">
+      <hr>
+      <p>2019 | Deepan Babu</p>
+      <p><a href="https://pdeepanbabu.github.io" class="text-decoration-none"><i class="fab fa-github"></i></a></p>
+      <hr>
+  </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        var options = {
+          series: [{
+          data: [1]
+        }],
+          chart: {
+          type: 'area',
+          height: 160,
+          sparkline: {
+            enabled: true
+          },
+        },
+        stroke: {
+          curve: 'straight',
+          width: 1
+        },
+        fill: {
+          opacity: 0.3,
+        },
+        yaxis: {
+          min: 0
+        },
+        title: {
+          text: '$424,652',
+          offsetX: 0,
+          style: {
+            fontSize: '24px',
+          }
+        },
+        };
+
+        var cdata = [{
+            type: 'choropleth',
+            locations: [],
+            z: [],
+            text: [],
+            autocolorscale: true,
+            reversescale: false,
+            marker: {
+                line: {
+                    color: 'rgb(180,180,180)',
+                    width: 0.5
+                }
+            },
+            colorbar: {
+                thickness: 10,
+                tickprefix: '',
+                title: 'Cases<br> in Millions'
+            }
+      }];
+
+      var clayout = {
+          width: 600,
+          height: 400,
+          title: 'COVID-19 Cases <br>Source: <a href="https://ourworldindata.org"> Our World in Data</a>',
+          margin:{
+            l:0,
+            r:0,
+            b:0,
+            t:50,
+            pad:4
+          },
+          geo:{
+              showframe: false,
+              showcoastlines: false,
+              projection:{
+                  type: 'mercator'
+              }
+          }
+      };
+      
+
+
+
+
+        async function fetchAPI(url){
+            const resp = await fetch(url)
+            const data = await resp.json()
+            return data
+        }
+
+        async function getData(){
+          const countryData = await fetchAPI('http://ip-api.com/json')
+          const country = countryData['country']
+          const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
+          const countriesCode = Object.keys(covidData)
+
+          const conData = getCountryData(countriesCode, covidData, country)
+
+          const id = document.getElementById('current-location')
+          id.innerHTML = country
+          id.href = '/projects/covid-19/pages/country.html#'+conData['code']
+          id.setAttribute('data-id', conData['code'])
+          updateWorldData(covidData)
+          createTable(conData, 'world-table', ['text', 'z', 'deaths', 'new', 'population', 'continent'])
+        }
+        
+        function getCountryData(countriesCode, covidData, country){
+          let conData = []
+          let code;
+          countriesCode.forEach(element => {
+            let details = {}
+            const location = covidData[element]['location']
+            if(location.toLowerCase() == country.toLowerCase()){
+                code = element
+            }
+              const d = covidData[element]['data']
+              details['location'] = element
+              details['z'] = d[d.length - 1]['total_cases']
+              details['text'] = covidData[element]['location']
+              details['population'] = covidData[element]['population']
+              details['continent'] = covidData[element]['continent']
+              details['deaths'] = d[d.length - 1]['total_deaths']
+              details['new'] = d[d.length - 1]['new_cases']
+              conData.push(details)
+          });
+          return {'data':conData, 'code':code}
+        }
+
+        function createTable(c, id, col){
+          const data = c['data']
+          const table = document.getElementById(id)
+          const t = $(table).find('tbody')
+          data.forEach(element => {
+            if(element['z'] != undefined && element['text'] != 'World'){
+              const tr = document.createElement('tr')
+              col.forEach(tag => {
+                const td = document.createElement('td')
+                if(tag == 'text'){
+                const a = document.createElement('a')
+                a.href = '/projects/covid-19/pages/country.html#'+element['location']
+                a.innerHTML = element[tag]
+                a.className = 'text-muted text-decoration-none'
+                a.setAttribute('style', 'color: #c51162!important')
+                td.appendChild(a)
+                } else {
+                  td.innerHTML = element[tag]
+                }
+                tr.appendChild(td)
+            });
+            t[0].appendChild(tr)
+            }
+          });
+          $(table).DataTable({
+            "order": [[ 1, "desc" ]]
+          })
+        }
+
+        function updateWorldData(covidData){
+          const worldData = covidData['OWID_WRL']['data']
+          const lastTotalCase = worldData[worldData.length - 1]
+
+          const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
+
+          plot.forEach(element => {
+            let plotOptions = JSON.parse(JSON.stringify(options))
+            plotOptions.title.text = lastTotalCase[element]
+            plotOptions.series[0].name = element
+            plotOptions.series[0].data = getcolumns(element, worldData)
+
+            var chart = new ApexCharts(document.querySelector('#'+element), plotOptions);
+            chart.render();
+          });
+        }
+
+        function getcolumns(c, d){
+          const data = d.map(function(item, index){return item[c]})
+          return data
+        }
+        getData()
+        
+    </script>
+  </body>
+</html>

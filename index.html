@@ -8,64 +8,107 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/wave.css">
-    <link rel="stylesheet" href="/css/script.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 
     <title>Deepan Babu</title>
   </head>
   <body>
-    <div class="header">
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" href="#">Deepan Babu</a>
-          </nav>
-        <div class="inner-header flex">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-8">
-                    </div>
-                    <div class="col-md-4">
-                        <!-- <h1>I'm a LabVIEW Developer</h1> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <!--Waves Container-->
-        <div>
-            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-                <defs>
-                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-                </defs>
-                <g class="parallax">
-                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-                </g>
-            </svg>
-        </div>
-        <!--Waves end-->
-    
-    </div>
 
-    <div class="col-md-12 main-content">
+
+
+    <div class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <a class="navbar-brand" href="/index.html">DB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/projects.html">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/skills.html">Skills</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Blog</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+              </li>
+          </ul>
+        </div>
+    </nav>
+      <div class="inner-header flex">
+          <div class="col-md-12">
+              <div class="row">
+                  <div class="col-md-3">
+                  </div>
+                  <div class="main-content col-md-9 text-justify">
+                    <p>Hello, I'm </p>
+                    <span>Deepan Babu</span>
+                    <p>I'm a Test Automation software developer specialised in frontend and backend development for complex scalable embedded application.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!--Waves Container-->
+      <div>
+          <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+              <defs>
+                  <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+              </defs>
+              <g class="parallax">
+                  <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                  <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                  <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                  <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+              </g>
+          </svg>
+      </div>
+      <!--Waves end-->
+  </div>
+          
+
+    <div class="container content">
         <div class="row">
-            <div class="col-md-12 about text-center">
-                <h1>About Me</h1>
-                <h4>9+ Years of experience in Automation Based Testing and Measurement</h4>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">PC Based Automation Software Development.</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                  </ul>
+            <div class="col-md-12 pt-5" id="skills">
+                <h1 class="content-head-even pb-2 text-muted">Skills</h1>
+                <p class="skills-overview text-muted text-justify">I am having 10+ years of profession experience in <a href="https://en.wikipedia.org/wiki/Embedded_software" class="text-decoration-none"><span>embedded software</span></a>, test system development, team management & project management for various industries.</p>
+                <a href="/pages/skills.html" class="btn btn-primary">Learn more</a>
             </div>
         </div>
     </div>
-    <div class="content flex">
-        <p>2019 | Deepan Babu</p>
-    </div>
+        <div class="container-fluid">
+            <div class="col-md-12 text-center pt-5" id="area-served">
+                <h1 class="content-head-even pb-2 text-muted">Clients I've worked with</h1>
+                    <img src="/img/clients/Tata.png" class="client-logo" alt="Tata Motors">
+                    <img src="https://marutisuzukiarenaprodcdn.azureedge.net/-/media/images/maruti/marutisuzuki/global/maruti-logo.ashx?rev=089f9cf96e7d4e83876e8d906cb527b1&h=39&w=194&la=en&hash=B876452A0F433E2A49759110598BE8B1" class="client-logo" alt="Maruti Suzuki">
+                    <img src="/img/clients/fenner.png" class="client-logo" alt="Fenner India">
+                    <img src="https://www.ifbappliances.com/skin/frontend/rwd/ifb/images/logo.png" class="client-logo" alt="IFB">
+                    <img src="https://www.honda.com.sg/images/logo.png" class="client-logo" alt="Honda">
+                    <img src="/img/clients/Carraro.png" class="client-logo" style="width: 400px;" alt="Carraro">
+                    <img src="/img/clients/ti.png" class="client-logo" alt="Texas Instruments">
+                    <img src="/img/clients/cirrus.png" class="client-logo" alt="Cirrus Logic">
+                    <img src="/img/clients/hal.png" class="client-logo" alt="Halliburton">
+                    <img src="https://www.mahindra.com/assets/img/mahindra-logo.png" class="client-logo" alt="Mahindra">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Logo-Nilfisk.jpg" class="client-logo" alt="Nilfisk">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/UTC_Aerospace_Systems.svg/1280px-UTC_Aerospace_Systems.svg.png" class="client-logo" alt="UTC Aerospace">
+                    
+                    
+                    
+            </div>
+        </div>
+        <div class="footer text-center text-muted pt-5">
+            <hr>
+            <p>2019 | Deepan Babu</p>
+            <p><a href="https://pdeepanbabu.github.io" class="text-decoration-none"><i class="fab fa-github"></i></a></p>
+            <hr>
+        </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -73,3 +116,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
 </html>
+
+
