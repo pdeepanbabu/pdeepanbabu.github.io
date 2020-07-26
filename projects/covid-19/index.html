@@ -185,8 +185,8 @@
         }
 
         async function getData(){
-          const countryData = await fetchAPI('http://ip-api.com/json')
-          const country = countryData['country']
+          const countryData = await fetchAPI('https://freegeoip.app/json/')
+          const country = countryData['country_name']
           const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
           const countriesCode = Object.keys(covidData)
 
