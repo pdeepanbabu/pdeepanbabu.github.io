@@ -256,15 +256,20 @@
           const lastTotalCase = worldData[worldData.length - 1]
 
           const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
-
+          //const colors = ['#ff1744', '#ff9800', '#482880', '#004d40']
+          const colors = ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
+        
           plot.forEach(element => {
+            let i = 0;
             let plotOptions = JSON.parse(JSON.stringify(options))
             plotOptions.title.text = lastTotalCase[element]
             plotOptions.series[0].name = element
+            plotOptions.colors[0] = colors[i]
             plotOptions.series[0].data = getcolumns(element, worldData)
 
             var chart = new ApexCharts(document.querySelector('#'+element), plotOptions);
             chart.render();
+            i = i+1
           });
         }
 
