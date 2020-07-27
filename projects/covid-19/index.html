@@ -258,7 +258,7 @@
                 if(tag == 'text'){
                 const a = document.createElement('a')
                 a.href = '/projects/covid-19/pages/country.html#'+element['location']
-                a.innerHTML = element[tag]
+                a.innerHTML = sepNum(element[tag])
                 a.className = 'text-muted text-decoration-none'
                 a.setAttribute('style', 'color: #c51162!important')
                 td.appendChild(a)
@@ -307,8 +307,8 @@
           let index = 0;
           plot.forEach(element => {
             let plotOptions = JSON.parse(JSON.stringify(options))
-            plotOptions.title.text = lastTotalCase[element]
-            plotOptions.series[0].name = sepNum(element)
+            plotOptions.title.text = sepNum(lastTotalCase[element])
+            plotOptions.series[0].name = element
             plotOptions.colors[0] = colo[index]
             plotOptions.series[0].data = getcolumns(element, worldData)
 
