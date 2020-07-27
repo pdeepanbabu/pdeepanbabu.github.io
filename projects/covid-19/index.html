@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 
+    <style>
+      .card-header{
+        color: #fff;
+      }
+    </style>
 
     <title>COVID Data</title>
   </head>
@@ -19,7 +24,7 @@
       <a class="navbar-brand" href="/projects/covid-19/index.html">COVID Data</a>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="main-covid-data">
       <br>
       <div class="row">
         <div class="col-md-12 text-right">
@@ -29,8 +34,8 @@
           <h3>Total Coronovirus cases</h3>
           <div class="row">
             <div class="col-md-3">
-              <div class="card">
-                <div class="card-header text-right">
+              <div class="card shadow rounded">
+                <div class="card-header bg-info text-right">
                   Total Cases
                 </div>
                 <div class="card-body" id="total_cases">
@@ -38,8 +43,8 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div class="card">
-                <div class="card-header text-right">
+              <div class="card shadow rounded">
+                <div class="card-header bg-info text-right">
                   New Cases
                 </div>
                 <div class="card-body" id="new_cases">
@@ -47,8 +52,8 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div class="card">
-                <div class="card-header text-right">
+              <div class="card shadow rounded">
+                <div class="card-header bg-info text-right">
                   Total Deaths
                 </div>
                 <div class="card-body" id="total_deaths">
@@ -56,8 +61,8 @@
               </div>
             </div>
             <div class="col-md-3">
-              <div class="card">
-                <div class="card-header text-right">
+              <div class="card shadow rounded">
+                <div class="card-header bg-info text-right">
                   New Deaths
                 </div>
                 <div class="card-body" id="new_deaths">
@@ -66,17 +71,21 @@
             </div>
           </div>
         </div>
+        <br>
             <!-- <div class="col-md-12 pt-4" id="world-map"></div> -->
             <div class="col-md-12 pt-4">
-              <table class="table" id="world-table">
-                <thead class="bg-info" style="color:#fff">
+              <table class="table shadow rounded" id="world-table">
+                <thead class="bg-info shadow rounded" style="color:#fff">
                   <tr>
                     <th scope="col">Country</th>
                     <th scope="col">Total Cases</th>
                     <th scope="col">Total Deaths</th>
                     <th scope="col">New Cases</th>
+                    <th scope="col">Inc %</th>
                     <th scope="col">Total Population</th>
+                    <th scope="col">% affected</th>
                     <th scope="col">Continent</th>
+                    <th scope="col">Last 2 weeks new cases</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,18 +119,22 @@
         }],
           chart: {
           type: 'area',
+          width: '100%',
           height: 160,
           sparkline: {
             enabled: true
           },
         },
         stroke: {
-          curve: 'straight',
+          curve: 'smooth',
           width: 1
         },
          colors:['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
         fill: {
           opacity: 0.3,
+        },
+        tooltip:{
+          enabled: true
         },
         yaxis: {
           min: 0
@@ -175,9 +188,7 @@
           }
       };
       
-
-
-
+        const m = document.getElementById('main-covid-data')
 
         async function fetchAPI(url){
             const resp = await fetch(url)
@@ -198,7 +209,7 @@
           id.href = '/projects/covid-19/pages/country.html#'+conData['code']
           id.setAttribute('data-id', conData['code'])
           updateWorldData(covidData)
-          createTable(conData, 'world-table', ['text', 'z', 'deaths', 'new', 'population', 'continent'])
+          createTable(conData, 'world-table', ['text', 'z', 'deaths', 'new', 'inc %', 'population', '%', 'continent', 'weeks'])
         }
         
         function getCountryData(countriesCode, covidData, country){
@@ -211,6 +222,7 @@
                 code = element
             }
               const d = covidData[element]['data']
+              details['weeks'] = d.slice(-21)
               details['location'] = element
               details['z'] = d[d.length - 1]['total_cases']
               details['text'] = covidData[element]['location']
@@ -218,12 +230,15 @@
               details['continent'] = covidData[element]['continent']
               details['deaths'] = d[d.length - 1]['total_deaths']
               details['new'] = d[d.length - 1]['new_cases']
+              details['%'] = ((details['z']/details['population'])*100).toFixed(2) + ' %'
+              details['inc %'] = (((d[d.length - 1]['total_cases']-d[d.length - 2]['total_cases'])/d[d.length - 2]['total_cases'])*100).toFixed(2) + ' %'
               conData.push(details)
           });
           return {'data':conData, 'code':code}
         }
 
         function createTable(c, id, col){
+          var chart;
           const data = c['data']
           const table = document.getElementById(id)
           const t = $(table).find('tbody')
@@ -239,12 +254,31 @@
                 a.className = 'text-muted text-decoration-none'
                 a.setAttribute('style', 'color: #c51162!important')
                 td.appendChild(a)
-                } else {
+                } else if (tag == 'weeks'){
+                  const p = document.createElement('div')
+                  p.className = 'col'
+                  p.id = element['location']
+                  p.setAttribute('style', 'width:100%')
+                  td.appendChild(p)
+                  let plotOptions = JSON.parse(JSON.stringify(options))
+                  plotOptions.title.text = ''
+                  plotOptions.chart.height = 40
+                  plotOptions.chart.width = 100
+                  plotOptions.chart.type = 'line'
+                  plotOptions.tooltip.enabled = false
+                  plotOptions.stroke.width = 2
+                  plotOptions.series[0].name = 'Total Cases'
+                  plotOptions.colors[0] = '#ff1744'
+                  plotOptions.series[0].data = getcolumns('new_cases', element['weeks'])
+                  chart = new ApexCharts(p, plotOptions);
+                }
+                else {
                   td.innerHTML = element[tag]
                 }
                 tr.appendChild(td)
             });
             t[0].appendChild(tr)
+            chart.render();
             }
           });
           $(table).DataTable({
@@ -255,22 +289,21 @@
         function updateWorldData(covidData){
           const worldData = covidData['OWID_WRL']['data']
           const lastTotalCase = worldData[worldData.length - 1]
-
+          
           const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
           //const colors = ['#ff1744', '#ff9800', '#482880', '#004d40']
-          const colors = ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
-        
+          const colo = ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
+          let index = 0;
           plot.forEach(element => {
-            let i = 0;
             let plotOptions = JSON.parse(JSON.stringify(options))
             plotOptions.title.text = lastTotalCase[element]
             plotOptions.series[0].name = element
-            plotOptions.colors[0] = colors[i]
+            plotOptions.colors[0] = colo[index]
             plotOptions.series[0].data = getcolumns(element, worldData)
 
             var chart = new ApexCharts(document.querySelector('#'+element), plotOptions);
             chart.render();
-            i = i+1
+            index += 1
           });
         }
 
