@@ -194,6 +194,7 @@
               }
           }
       };
+      function sepNum(r,e){return e=e||",",r=String(r).replace(/[\u0660-\u0669\u06f0-\u06f9]/g,function(r){return 15&r.charCodeAt(0)}).replace(/(?:[^\.]|^)\b(\d+)/g,function(r){return r=r.replace(/\B(?=(\d{3})+\b)/g,e)})}
       
         const m = document.getElementById('main-covid-data')
 
@@ -307,7 +308,7 @@
           plot.forEach(element => {
             let plotOptions = JSON.parse(JSON.stringify(options))
             plotOptions.title.text = lastTotalCase[element]
-            plotOptions.series[0].name = element
+            plotOptions.series[0].name = sepNum(element)
             plotOptions.colors[0] = colo[index]
             plotOptions.series[0].data = getcolumns(element, worldData)
 
