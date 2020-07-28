@@ -106,7 +106,7 @@
                   Cases List
                 </div>
                 <div class="card-body">
-                  <table class="table" id="country-table">
+                  <table class="table table-responsive" style="height:400px" id="country-table">
                     <thead class="bg-info" style="color:#fff">
                       <tr>
                         <th scope="col">Date</th>
@@ -253,12 +253,12 @@
             });
             t[0].appendChild(tr)
           });
-          $(table).DataTable({
-            "order": [[ 0, "desc" ]],
-             scrollCollapse: true,
-             paging:true,
-             "scrollX": true,
-          })
+          //$(table).DataTable({
+            //"order": [[ 0, "desc" ]],
+             //scrollCollapse: true,
+             //paging:true,
+             //"scrollX": true,
+          //})
         }
 
         function updateCountrydData(data){
