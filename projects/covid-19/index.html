@@ -240,7 +240,7 @@
               details['deaths'] = d[d.length - 1]['total_deaths']
               details['new'] = d[d.length - 1]['new_cases']
               details['%'] = ((details['z']/details['population'])*100).toFixed(2) + ' %'
-              details['inc %'] = (((d[d.length - 1]['total_cases']-d[d.length - 2]['total_cases'])/d[d.length - 2]['total_cases'])*100).toFixed(2) + ' %'
+              details['inc %'] = (((d[d.length - 1]['new_cases']-d[d.length - 2]['new_cases'])/d[d.length - 2]['new_cases'])*100).toFixed(2) + ' %'
               conData.push(details)
           });
           return {'data':conData, 'code':code}
