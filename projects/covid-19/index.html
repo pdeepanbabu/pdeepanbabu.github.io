@@ -241,7 +241,7 @@
               details['new'] = d[d.length - 1]['new_cases']
               details['%'] = ((details['z']/details['population'])*100).toFixed(2) + ' %'
               details['inc %'] = (((d[d.length - 1]['new_cases']-d[d.length - 2]['new_cases'])/d[d.length - 2]['new_cases'])*100).toFixed(2) + ' %'
-              if(details['inc %'] < 0){ details['inc %'] = `<i class="fas fa-sort-down"></i> ${details[inc %']}`}
+              if(details['inc %'] < 0){ details['inc %'] = `<i class="fas fa-sort-down"></i> ${details['inc %']}`}
               conData.push(details)
           });
           return {'data':conData, 'code':code}
