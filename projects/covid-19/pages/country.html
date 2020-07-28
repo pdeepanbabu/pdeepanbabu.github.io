@@ -13,6 +13,7 @@
     <style>
       .card-header{
         color: #fff;
+        font-weight: bold;
       }
       @media (min-width: 480px){
         .col-md-3, .col-md-6{
@@ -33,6 +34,7 @@
       <br>
       <div class="row">
         <div class="col-md-12">
+          <select name="" class="float-right" id="country"></select>
           <h3  id="current-location"></h3>
           <div class="row">
             <div class="col-md-3">
@@ -179,6 +181,7 @@
 
         const url = (window.location.href).split('#')
         let country = url[1]
+        let covidData;
  
         async function fetchAPI(url){
             const resp = await fetch(url)
@@ -186,18 +189,36 @@
             return data
         }
 
-        async function getData(){
-          const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
-          const data = covidData[country]['data']
-          const id = document.getElementById('current-location')
-          id.innerHTML = covidData[country]['location']
+
+        function sepNum(r,e){return e=e||",",r=String(r).replace(/[\u0660-\u0669\u06f0-\u06f9]/g,function(r){return 15&r.charCodeAt(0)}).replace(/(?:[^\.]|^)\b(\d+)/g,function(r){return r=r.replace(/\B(?=(\d{3})+\b)/g,e)})}
+
+
+        async function getData(c){
+          const data = covidData[c]['data']
           updateCountrydData(data)
           createTable(data, 'country-table', ['date', 'total_cases', 'total_deaths', 'new_cases','new_deaths'])
+          updateChart(data)
+        }
 
+        async function updateCountryList(){
+          covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
+          const keys = Object.keys(covidData)
+          data = ''
+          keys.forEach(element => {
+            data += `<option value="${element}">${covidData[element]['location']}</option>`
+          });
+          const c = document.getElementById('country')
+          c.innerHTML = data
+          c.value = country
+        }
+
+        function updateChart(data){
           const plot = ['total_cases', 'new_cases']
           const colors = ['#ff1744', '#ff9800', '#482880', '#004d40']
           let index = 0;
           plot.forEach(element => {
+            const plotDiv = document.getElementById(`${element}_chart`)
+            plotDiv.innerHTML = ''
             let plotOptions = JSON.parse(JSON.stringify(options))
             plotOptions.title.text = ''
             plotOptions.series[0].name = element
@@ -208,18 +229,25 @@
             chart.render();
             index += 1 
           });
-
         }
 
         function createTable(c, id, col){
+          if ($.fn.dataTable.isDataTable(`#${id}`)) {
+          var datable = $(`#${id}`).DataTable().clear().destroy();
+          }
           const data = c
           const table = document.getElementById(id)
           const t = $(table).find('tbody')
+          t.innerHTML = ""
           data.forEach(element => {
             const tr = document.createElement('tr')
             col.forEach(tag => {
                 const td = document.createElement('td')
-                td.innerHTML = element[tag]
+                if(tag != 'date'){
+                  td.innerHTML = sepNum(element[tag])
+                }else{
+                  td.innerHTML = element[tag]
+                }
                 tr.appendChild(td)
             });
             t[0].appendChild(tr)
@@ -230,7 +258,6 @@
              paging:true,
              "scrollX": true,
           })
-          $(table).DataTable().draw()
         }
 
         function updateCountrydData(data){
@@ -238,16 +265,29 @@
           const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
           plot.forEach(element => {
             const el = document.getElementById(element)
-            el.innerHTML = lastTotalCase[element]
+            el.innerHTML = sepNum(lastTotalCase[element])
           });
         }
 
         function getcolumns(c, d){
-          var data;
-          data = c.map(function(item, index){return item[d]})
+          var data = [];
+          c.forEach(element => {
+            if(element[d] != undefined){
+              data.push(element[d])
+            }
+          });
           return data
         }
-        getData()
+
+        $('#country').change(function(e){
+          getData(e.target.value)
+        })
+
+        async function updateUI(){
+          await updateCountryList()
+          await getData(country)
+        }
+        updateUI()
         
     </script>
   </body>
