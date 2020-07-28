@@ -107,6 +107,7 @@
       <hr>
       <p>2019 | Deepan Babu</p>
       <p><a href="https://pdeepanbabu.github.io" class="text-decoration-none"><i class="fab fa-github"></i></a></p>
+      <p>Source: <a href="https://ourworldindata.org/coronavirus" class="text-decoration-none">"Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org.</a></p>
       <hr>
   </div>
 
@@ -258,7 +259,7 @@
                 if(tag == 'text'){
                 const a = document.createElement('a')
                 a.href = '/projects/covid-19/pages/country.html#'+element['location']
-                a.innerHTML = sepNum(element[tag])
+                a.innerHTML = element[tag]
                 a.className = 'text-muted text-decoration-none'
                 a.setAttribute('style', 'color: #c51162!important')
                 td.appendChild(a)
@@ -281,7 +282,7 @@
                   chart = new ApexCharts(p, plotOptions);
                 }
                 else {
-                  td.innerHTML = element[tag]
+                  td.innerHTML = sepNum(element[tag])
                 }
                 tr.appendChild(td)
             });
