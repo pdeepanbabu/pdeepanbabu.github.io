@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 
+    <style>
+      .card-header{
+        color: #fff;
+      }
+    </style>
 
     <title>COVID Data</title>
   </head>
@@ -25,36 +30,36 @@
         <div class="col-md-12">
           <h3  id="current-location"></h3>
           <div class="row">
-            <div class="col-md-3 shadow rounded">
-              <div class="card text-center">
-                <div class="card-header">
+            <div class="col-md-3">
+              <div class="card  shadow rounded text-center">
+                <div class="card-header bg-info">
                   Total Cases
                 </div>
                 <div class="card-body" id="total_cases">
                 </div>
               </div>
             </div>
-            <div class="col-md-3 shadow rounded">
-              <div class="card text-center">
-                <div class="card-header">
+            <div class="col-md-3">
+              <div class="card shadow rounded text-center">
+                <div class="card-header bg-info">
                   New Cases
                 </div>
                 <div class="card-body" id="new_cases">
                 </div>
               </div>
             </div>
-            <div class="col-md-3 shadow rounded">
-              <div class="card text-center">
-                <div class="card-header">
+            <div class="col-md-3">
+              <div class="card shadow rounded text-center">
+                <div class="card-header bg-info">
                   Total Deaths
                 </div>
                 <div class="card-body" id="total_deaths">
                 </div>
               </div>
             </div>
-            <div class="col-md-3 shadow rounded">
-              <div class="card text-center">
-                <div class="card-header">
+            <div class="col-md-3">
+              <div class="card shadow rounded text-center">
+                <div class="card-header bg-info">
                   New Deaths
                 </div>
                 <div class="card-body" id="new_deaths">
@@ -63,30 +68,51 @@
             </div>
           </div>
         </div>
-            <!-- <div class="col-md-12 pt-4" id="world-map"></div> -->
+
             <div class="col-md-12 pt-4">
-              <div class="card text-center">
-                <div class="card-header">
-                  Cases List
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card shadow rounded text-center">
+                    <div class="card-header bg-info">
+                      Total Cases
+                    </div>
+                    <div class="card-body" id="total_cases_chart">
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <table class="table" id="country-table">
-                <thead class="bg-info" style="color:#fff">
-                  <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Total Cases</th>
-                    <th scope="col">Total Deaths</th>
-                    <th scope="col">New Cases</th>
-                    <th scope="col">New Deaths</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+                <div class="col-md-6">
+                  <div class="card shadow rounded text-center">
+                    <div class="card-header bg-info">
+                      New Cases
+                    </div>
+                    <div class="card-body" id="new_cases_chart">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
+            <div class="col-md-12 pt-4">
+              <div class="card shadow rounded text-center">
+                <div class="card-header bg-info">
+                  Cases List
+                </div>
+                <div class="card-body">
+                  <table class="table" id="country-table">
+                    <thead class="bg-info" style="color:#fff">
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Total Cases</th>
+                        <th scope="col">Total Deaths</th>
+                        <th scope="col">New Cases</th>
+                        <th scope="col">New Deaths</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
       </div>
     </div>
 
@@ -106,6 +132,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 
     <script>
         var options = {
@@ -114,10 +141,13 @@
         }],
           chart: {
           type: 'area',
-          height: 160,
+          height: 300,
           sparkline: {
-            enabled: true
+            enabled: false
           },
+        },
+        dataLabels: {
+          enabled: false
         },
         stroke: {
           curve: 'straight',
@@ -129,6 +159,10 @@
         yaxis: {
           min: 0
         },
+        xaxis: {
+          type: 'datetime',
+        },
+        colors:[],
         title: {
           text: '$424,652',
           offsetX: 0,
@@ -154,6 +188,22 @@
           id.innerHTML = covidData[country]['location']
           updateCountrydData(data)
           createTable(data, 'country-table', ['date', 'total_cases', 'total_deaths', 'new_cases','new_deaths'])
+
+          const plot = ['total_cases', 'new_cases']
+          const colors = ['#ff1744', '#ff9800', '#482880', '#004d40']
+          let index = 0;
+          plot.forEach(element => {
+            let plotOptions = JSON.parse(JSON.stringify(options))
+            plotOptions.title.text = ''
+            plotOptions.series[0].name = element
+            plotOptions.colors[0] = colors[index]
+            plotOptions.xaxis.categories = getcolumns(data, 'date')
+            plotOptions.series[0].data = getcolumns(data, element)
+            var chart = new ApexCharts(document.querySelector(`#${element}_chart`), plotOptions);
+            chart.render();
+            index += 1 
+          });
+
         }
 
         function createTable(c, id, col){
@@ -173,7 +223,6 @@
             "order": [[ 0, "desc" ]],
              scrollCollapse: true,
              paging:true,
-             "scrollX": true,
           })
         }
 
@@ -187,7 +236,8 @@
         }
 
         function getcolumns(c, d){
-          const data = d.map(function(item, index){return item[c]})
+          var data;
+          data = c.map(function(item, index){return item[d]})
           return data
         }
         getData()

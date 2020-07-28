@@ -27,7 +27,7 @@
     <div class="container-fluid" id="main-covid-data">
       <br>
       <div class="row">
-        <div class="col-md-12 text-right">
+        <div class="col-md-12 text-center">
           <p>Country: <a href="" class="text-decoration-none text-muted" id="current-location"></a></p>
         </div>
         <div class="col-md-12">
@@ -35,7 +35,7 @@
           <div class="row">
             <div class="col-md-3">
               <div class="card shadow rounded">
-                <div class="card-header bg-info text-right">
+                <div class="card-header bg-info text-center">
                   Total Cases
                 </div>
                 <div class="card-body" id="total_cases">
@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-3">
               <div class="card shadow rounded">
-                <div class="card-header bg-info text-right">
+                <div class="card-header bg-info text-center">
                   New Cases
                 </div>
                 <div class="card-body" id="new_cases">
@@ -53,7 +53,7 @@
             </div>
             <div class="col-md-3">
               <div class="card shadow rounded">
-                <div class="card-header bg-info text-right">
+                <div class="card-header bg-info text-center">
                   Total Deaths
                 </div>
                 <div class="card-body" id="total_deaths">
@@ -240,9 +240,17 @@
               details['deaths'] = d[d.length - 1]['total_deaths']
               details['new'] = d[d.length - 1]['new_cases']
               details['%'] = ((details['z']/details['population'])*100).toFixed(2) + ' %'
-              details['inc %'] = (((d[d.length - 1]['new_cases']-d[d.length - 2]['new_cases'])/d[d.length - 2]['new_cases'])*100).toFixed(2)
-              if(details['inc %'] < 0){ details['inc %'] = `<i class="fas fa-sort-down" style="color:green"></i> ${details['inc %']} %`}
-              else{details['inc %'] = `<i class="fas fa-sort-up" style="color:red"></i> ${details['inc %']} %`}
+              var diff = d[d.length - 1]['new_cases']-d[d.length - 2]['new_cases']
+              var lastnewCase = d[d.length - 2]['new_cases']
+              
+              if(lastnewCase != 0){
+                details['inc %'] = ((diff/lastnewCase)*100).toFixed(2)
+                if(details['inc %'] < 0){ details['inc %'] = `<i class="fas fa-sort-down" style="color:green"></i> ${details['inc %']} %`}
+                else{details['inc %'] = `<i class="fas fa-sort-up" style="color:red"></i> ${details['inc %']} %`}
+              } else {
+                details['inc %'] = '-'
+              }
+              console.log(diff, lastnewCase, details['inc %'])
               conData.push(details)
           });
           return {'data':conData, 'code':code}
