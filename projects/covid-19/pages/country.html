@@ -25,7 +25,7 @@
         <div class="col-md-12">
           <h3  id="current-location"></h3>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 shadow rounded">
               <div class="card text-center">
                 <div class="card-header">
                   Total Cases
@@ -34,7 +34,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 shadow rounded">
               <div class="card text-center">
                 <div class="card-header">
                   New Cases
@@ -43,7 +43,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 shadow rounded">
               <div class="card text-center">
                 <div class="card-header">
                   Total Deaths
@@ -52,7 +52,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 shadow rounded">
               <div class="card text-center">
                 <div class="card-header">
                   New Deaths
@@ -65,7 +65,12 @@
         </div>
             <!-- <div class="col-md-12 pt-4" id="world-map"></div> -->
             <div class="col-md-12 pt-4">
-              <table class="table" id="country-table">
+              <div class="card text-center">
+                <div class="card-header">
+                  Cases List
+                </div>
+                <div class="card-body">
+                  <table class="table" id="country-table">
                 <thead class="bg-info" style="color:#fff">
                   <tr>
                     <th scope="col">Date</th>
@@ -78,6 +83,8 @@
                 <tbody>
                 </tbody>
               </table>
+                </div>
+              </div>
             </div>
 
       </div>
@@ -87,6 +94,7 @@
       <hr>
       <p>2019 | Deepan Babu</p>
       <p><a href="https://pdeepanbabu.github.io" class="text-decoration-none"><i class="fab fa-github"></i></a></p>
+      <p>Source: <a href="https://ourworldindata.org/coronavirus" class="text-decoration-none">"Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org.</a></p>
       <hr>
   </div>
 
@@ -162,7 +170,10 @@
             t[0].appendChild(tr)
           });
           $(table).DataTable({
-            "order": [[ 0, "desc" ]]
+            "order": [[ 0, "desc" ]],
+             scrollCollapse: true,
+             paging:true,
+             "scrollX": true,
           })
         }
 
