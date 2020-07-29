@@ -21,15 +21,35 @@
         }
       }
 
-AnyElementYouWantToShowOnAjaxSend {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh; /* to make it responsive */
-    width: 100vw; /* to make it responsive */
-    overflow: hidden; /*to remove scrollbars */
-    z-index: 99999; /*to make it appear on topmost part of the page */
-    display: none; /*to make it visible only on fadeIn() function */
+#spinner{
+  visibility: hidden;
+  width: 80px;
+  height: 80px;
+
+  border: 2px solid #f3f3f3;
+  border-top:3px solid #f25a41;
+  border-radius: 100%;
+
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right: 0;
+  margin: auto;
+
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+      transform: rotate(0deg);
+  } to {
+      transform: rotate(360deg);
+  }
+}
+
+#spinner.show {
+  visibility: visible;
 }
 
     </style>
@@ -41,6 +61,7 @@ AnyElementYouWantToShowOnAjaxSend {
     <nav class="navbar navbar-dark bg-info">
       <a class="navbar-brand" href="/projects/covid-19/index.html">COVID Data</a>
     </nav>
+<div id="spinner"></div> 
 
     <div class="container" id="main-covid-data">
       <br>
@@ -220,18 +241,29 @@ AnyElementYouWantToShowOnAjaxSend {
               }
           }
       };
+
+const spinner = document.getElementById("spinner");
+
+function showSpinner() {
+  spinner.className = "show";
+  setTimeout(() => {
+    spinner.className = spinner.className.replace("show", "");
+  }, 5000);
+}
+
       function sepNum(r,e){return e=e||",",r=String(r).replace(/[\u0660-\u0669\u06f0-\u06f9]/g,function(r){return 15&r.charCodeAt(0)}).replace(/(?:[^\.]|^)\b(\d+)/g,function(r){return r=r.replace(/\B(?=(\d{3})+\b)/g,e)})}
       
         const m = document.getElementById('main-covid-data')
 
         async function fetchAPI(url){
+            showSpinner()
             const resp = await fetch(url)
             const data = await resp.json()
             return data
         }
 
         async function getData(){
-$(AnyElementYouWantToShowOnAjaxSend).fadeIn(250)
+
           const countryData = await fetchAPI('https://freegeoip.app/json/')
           const country = countryData['country_name']
           const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
@@ -246,7 +278,7 @@ $(AnyElementYouWantToShowOnAjaxSend).fadeIn(250)
           updateWorldData(covidData)
           createTable(conData, 'world-table', ['text', 'z', 'deaths', 'weeks','new', 'inc %', 'population', '%', 'continent'])
 
-$(AnyElementYouWantToShowOnAjaxSend).fadeOut(250)
+
         }
         
         function getCountryData(countriesCode, covidData, country){
