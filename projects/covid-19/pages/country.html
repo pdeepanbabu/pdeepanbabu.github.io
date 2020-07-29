@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 
     <style>
@@ -30,7 +30,7 @@
       <a class="navbar-brand" href="/projects/covid-19/index.html">COVID Data</a>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container">
       <br>
       <div class="row">
         <div class="col-md-12 pb-3">
@@ -79,21 +79,12 @@
 
             <div class="col-md-12 pt-4">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <div class="card shadow rounded text-center">
                     <div class="card-header bg-info">
-                      Total Cases
+                      Number Of Cases
                     </div>
-                    <div class="card-body" id="total_cases_chart">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="card shadow rounded text-center">
-                    <div class="card-header bg-info">
-                      New Cases
-                    </div>
-                    <div class="card-body" id="new_cases_chart">
+                    <div class="card-body" id="chart">
                     </div>
                   </div>
                 </div>
@@ -101,23 +92,49 @@
             </div>
 
             <div class="col-md-12 pt-4">
-              <div class="card shadow rounded text-center">
-                <div class="card-header bg-info">
-                  Cases List
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card shadow rounded text-center">
+                    <div class="card-header bg-info">
+                      Cases List
+                    </div>
+                    <div class="card-body">
+                      <table class="table" id="country-table">
+                        <thead class="bg-info" style="color:#fff">
+                          <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Total Cases</th>
+                            <th scope="col">Total Deaths</th>
+                            <th scope="col">New Cases</th>
+                            <th scope="col">New Deaths</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <table class="table table-responsive" style="height:400px" id="country-table">
-                    <thead class="bg-info" style="color:#fff">
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Total Cases</th>
-                        <th scope="col">Total Deaths</th>
-                        <th scope="col">New Cases</th>
-                        <th scope="col">New Deaths</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-12 pb-2">
+                      <div class="card shadow rounded text-center">
+                        <div class="card-header bg-info">
+                          Total Cases
+                        </div>
+                        <div class="card-body" id="total_cases_chart">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 pb-2">
+                      <div class="card shadow rounded text-center">
+                        <div class="card-header bg-info">
+                          New Cases
+                        </div>
+                        <div class="card-body" id="new_cases_chart">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,12 +151,12 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
 
     <script>
@@ -149,7 +166,7 @@
         }],
           chart: {
           type: 'area',
-          height: 300,
+          height: 378,
           sparkline: {
             enabled: false
           },
@@ -158,7 +175,7 @@
           enabled: false
         },
         stroke: {
-          curve: 'straight',
+          curve: 'smooth',
           width: 1
         },
         fill: {
@@ -215,8 +232,54 @@
 
         function updateChart(data){
           const plot = ['total_cases', 'new_cases']
-          const colors = ['#ff1744', '#ff9800', '#482880', '#004d40']
+          // const colors = ['#ff1744', '#ff9800', '#482880', '#000000']
+          const colors = ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
           let index = 0;
+
+          const totChart = document.getElementById('chart')
+          totChart.innerHTML = ""
+
+          let totalChart = JSON.parse(JSON.stringify(options))
+          totalChart.title.text = ''
+          totalChart.xaxis.categories = getcolumns(data, 'date')
+          totalChart.colors = colors
+          totalChart.stroke.width = 1.5
+          totalChart.yaxis = [
+          {
+            title: {
+              text: '',
+            },
+          },
+          {
+            opposite: true,
+            title: {
+              text: '',
+            },
+          },
+        ];
+          totalChart.series = [{
+            data: getcolumns(data, 'total_cases'),
+            name: 'Total Cases',
+            type: 'bar'
+          },
+          {
+            data: getcolumns(data, 'new_cases'),
+            name: 'New Cases',
+            type: 'area'
+          },
+          {
+            data: getcolumns(data, 'total_deaths'),
+            name: 'Total Deaths',
+            type: 'area'
+          },
+          {
+            data: getcolumns(data, 'new_deaths'),
+            name: 'New Deaths',
+            type: 'area'
+          }]
+          var chart = new ApexCharts(document.querySelector(`#chart`), totalChart);
+          chart.render();
+          
           plot.forEach(element => {
             const plotDiv = document.getElementById(`${element}_chart`)
             plotDiv.innerHTML = ''
@@ -253,12 +316,14 @@
             });
             t[0].appendChild(tr)
           });
-          //$(table).DataTable({
-            //"order": [[ 0, "desc" ]],
-             //scrollCollapse: true,
-             //paging:true,
-             //"scrollX": true,
-          //})
+          $(table).DataTable({
+            "order": [[ 0, "desc" ]],
+             "scrollY": true,
+             "scrollX": true,
+          })
+
+          $($.fn.dataTable.tables(true)).DataTable()
+          .columns.adjust();
         }
 
         function updateCountrydData(data){
