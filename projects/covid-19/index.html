@@ -20,6 +20,18 @@
           padding: 10px;
         }
       }
+
+AnyElementYouWantToShowOnAjaxSend {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* to make it responsive */
+    width: 100vw; /* to make it responsive */
+    overflow: hidden; /*to remove scrollbars */
+    z-index: 99999; /*to make it appear on topmost part of the page */
+    display: none; /*to make it visible only on fadeIn() function */
+}
+
     </style>
 
     <title>COVID Data</title>
@@ -219,6 +231,7 @@
         }
 
         async function getData(){
+$(AnyElementYouWantToShowOnAjaxSend).fadeIn(250)
           const countryData = await fetchAPI('https://freegeoip.app/json/')
           const country = countryData['country_name']
           const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
@@ -232,6 +245,8 @@
           id.setAttribute('data-id', conData['code'])
           updateWorldData(covidData)
           createTable(conData, 'world-table', ['text', 'z', 'deaths', 'weeks','new', 'inc %', 'population', '%', 'continent'])
+
+$(AnyElementYouWantToShowOnAjaxSend).fadeOut(250)
         }
         
         function getCountryData(countriesCode, covidData, country){
