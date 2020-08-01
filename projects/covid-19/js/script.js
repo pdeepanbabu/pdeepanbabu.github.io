@@ -26,6 +26,9 @@ var options = {
   yaxis: {
     min: 0
   },
+  xaxis: {
+    type: 'datetime',
+  },
   title: {
     text: '$424,652',
     offsetX: 0,
@@ -129,6 +132,7 @@ function getCountryData(countriesCode, covidData, country){
             plotOptions.chart.type = 'line'
             plotOptions.tooltip.enabled = false
             plotOptions.stroke.width = 2
+            plotOptions.xaxis.categories = getcolumns('date', element['weeks'])
             plotOptions.series[0].name = 'Total Cases'
             plotOptions.colors[0] = '#ff1744'
             plotOptions.series[0].data = getcolumns('new_cases', element['weeks'])
@@ -163,6 +167,7 @@ function getCountryData(countriesCode, covidData, country){
       let plotOptions = JSON.parse(JSON.stringify(options))
       plotOptions.title.text = sepNum(lastTotalCase[element])
       plotOptions.series[0].name = element
+      plotOptions.xaxis.categories = getcolumns('date', worldData)
       plotOptions.colors[0] = colo[index]
       plotOptions.series[0].data = getcolumns(element, worldData)
 
