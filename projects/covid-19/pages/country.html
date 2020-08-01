@@ -219,7 +219,8 @@
         }
 
         async function updateCountryList(){
-          covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
+          covidData = await fetchAPI("/projects/covid-19/data/owid-covid-data.json")
+          // covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
           const keys = Object.keys(covidData)
           data = ''
           keys.forEach(element => {

@@ -140,6 +140,8 @@
           data: [1]
         }],
           chart: {
+            animations: {
+        enabled: false,},
           type: 'area',
           width: '100%',
           height: 90,
@@ -233,18 +235,18 @@ function showSpinner() {
 
           const countryData = await fetchAPI('https://freegeoip.app/json/')
           const country = countryData['country_name']
-          const covidData = await fetchAPI('https://covid.ourworldindata.org/data/owid-covid-data.json')
+          const covidData = await fetchAPI("/projects/covid-19/data/owid-covid-data.json")
           const countriesCode = Object.keys(covidData)
-
           const conData = getCountryData(countriesCode, covidData, country)
-
           const id = document.getElementById('current-location')
           id.innerHTML = country
           id.href = '/projects/covid-19/pages/country.html#'+conData['code']
           id.setAttribute('data-id', conData['code'])
-          updateWorldData(covidData)
-          createTable(conData, 'world-table', ['text', 'z', 'deaths', 'weeks','new', 'inc %', 'population', '%', 'continent'])
-
+          await console.log(new Date())
+          await updateWorldData(covidData)
+          await console.log(new Date())
+          await createTable(conData, 'world-table', ['text', 'z', 'deaths', 'weeks','new', 'inc %', 'population', '%', 'continent'])
+          await console.log(new Date())
 
         }
         
