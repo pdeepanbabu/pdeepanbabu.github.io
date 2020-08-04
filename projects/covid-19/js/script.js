@@ -42,21 +42,16 @@ function sepNum(r,e){return e=e||",",r=String(r).replace(/[\u0660-\u0669\u06f0-\
 
 const m = document.getElementById('main-covid-data')
 
-let plotIndex = 0
-let chartIndex = 0
-
   async function fetchAPI(url){
       const resp = await fetch(url)
       const data = await resp.json()
       return data
   }
 
-
-
   async function getData(){
     $body = $("body");
     await $body.addClass("loading");
-    const table = document.getElementById('world-table')
+    
     const countryData = await fetchAPI('https://freegeoip.app/json/')
     const country = countryData['country_name']
     const covidData = await fetchAPI("/projects/covid-19/data/owid-covid-data.json")
@@ -66,10 +61,10 @@ let chartIndex = 0
     id.innerHTML = country
     id.href = '/projects/covid-19/pages/country.html#'+conData['code']
     id.setAttribute('data-id', conData['code'])
-    updateWorldData(covidData)
-    createTable(conData, 'world-table', ['text', 'z', 'deaths', 'weeks','new', 'inc %', 'population', '%', 'continent'])
-    //updateDataTable(table)
-    await $body.removeClass("loading");
+    await updateWorldData(covidData)
+    await createTable(conData, 'world-table', ['text', 'z', 'deaths', 'weeks','new', 'inc %', 'population', '%', 'continent'])
+
+    await $body.removeClass("loading"); 
   }
 
 function getCountryData(countriesCode, covidData, country){
@@ -82,7 +77,7 @@ function getCountryData(countriesCode, covidData, country){
           code = element
       }
         const d = covidData[element]['data']
-        details['weeks'] = d.slice(-30)
+        details['weeks'] = d.slice(-60)
         details['location'] = element
         details['z'] = d[d.length - 1]['total_cases']
         details['text'] = covidData[element]['location']
@@ -107,84 +102,79 @@ function getCountryData(countriesCode, covidData, country){
     return {'data':conData, 'code':code}
   }
 
-    function createTable(c, id, col){
-        var chart;
-        const data = c['data']
-        const table = document.getElementById('world-table')
-
-        const element = data[chartIndex]
-        if(element != undefined && element['text'] != 'World' && element['z'] != undefined){
-          const tr = document.createElement('tr')
-          var idx = 0;
-          var plotTable = setInterval(function(){
-          const dtable = document.getElementById(id)
-          const t = $(dtable).find('tbody')
-            var tag = col[idx]
-            const td = document.createElement('td')
-            if(tag == 'text'){
-            const a = document.createElement('a')
-            a.href = '/projects/covid-19/pages/country.html#'+element['location']
-            a.innerHTML = element[tag]
-            a.className = 'text-muted text-decoration-none'
-            a.setAttribute('style', 'color: #c51162!important')
-            td.appendChild(a)
-            } else if (tag == 'weeks'){
-              const p = document.createElement('div')
-              p.className = 'col'
-              p.id = element['location']
-              p.setAttribute('style', 'width:100%')
-              td.appendChild(p)
-              let plotOptions = JSON.parse(JSON.stringify(options))
-              plotOptions.title.text = ''
-              plotOptions.chart.height = 40
-              plotOptions.chart.width = 100
-              plotOptions.chart.type = 'line'
-              plotOptions.tooltip.enabled = false
-              plotOptions.stroke.width = 2
-              plotOptions.xaxis.categories = getcolumns('date', element['weeks'])
-              plotOptions.series[0].name = 'Total Cases'
-              plotOptions.colors[0] = '#ff1744'
-              plotOptions.series[0].data = getcolumns('new_cases', element['weeks'])
-              chart = new ApexCharts(p, plotOptions);
-              chart.render();
-            }
-            else {
-              td.innerHTML = sepNum(element[tag])
-            }
-            tr.appendChild(td)
-            idx += 1
-            if(idx < col.length) {} else {
-              t[0].appendChild(tr); 
-              clearInterval(plotTable)
-              if(element['location'] == 'ZWE'){
-                updateDataTable(table)
-              }
-            };
-        }, 10)     
-   }
-    chartIndex += 1
-    if (chartIndex < data.length) {window.setTimeout(createTable(c, id, col), 10)}
-    else {}
+  function createTable(c, id, col){
+    var chart;
+    const data = c['data']
+    const table = document.getElementById(id)
+    const t = $(table).find('tbody')
+    data.forEach(element => {
+      if(element['z'] != undefined && element['text'] != 'World'){
+        const tr = document.createElement('tr')
+        col.forEach(tag => {
+          const td = document.createElement('td')
+          if(tag == 'text'){
+          const a = document.createElement('a')
+          a.href = '/projects/covid-19/pages/country.html#'+element['location']
+          a.innerHTML = element[tag]
+          a.className = 'text-muted text-decoration-none'
+          a.setAttribute('style', 'color: #c51162!important')
+          td.appendChild(a)
+          } else if (tag == 'weeks'){
+            const p = document.createElement('div')
+            p.className = 'col'
+            p.id = element['location']
+            p.setAttribute('style', 'width:100%')
+            td.appendChild(p)
+            let plotOptions = JSON.parse(JSON.stringify(options))
+            plotOptions.title.text = ''
+            plotOptions.chart.height = 40
+            plotOptions.chart.width = 100
+            plotOptions.chart.type = 'line'
+            plotOptions.tooltip.enabled = false
+            plotOptions.stroke.width = 2
+            plotOptions.xaxis.categories = getcolumns('date', element['weeks'])
+            plotOptions.series[0].name = 'Total Cases'
+            plotOptions.colors[0] = '#ff1744'
+            plotOptions.series[0].data = getcolumns('new_cases', element['weeks'])
+            chart = new ApexCharts(p, plotOptions);
+          }
+          else {
+            td.innerHTML = sepNum(element[tag])
+          }
+          tr.appendChild(td)
+      });
+      t[0].appendChild(tr)
+      chart.render();
+      }
+    });
+    $(table).DataTable({
+      "order": [[ 1, "desc" ]],
+      scrollCollapse: true,
+       paging:true,
+       "scrollX": true,
+    })
   }
 
-    function updateWorldData(covidData){
-      const worldData = covidData['OWID_WRL']['data']
-      const lastTotalCase = worldData[worldData.length - 1]
+  function updateWorldData(covidData){
+    const worldData = covidData['OWID_WRL']['data']
+    const lastTotalCase = worldData[worldData.length - 1]
     
-      const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
-      const colo = ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
-      const element = plot[plotIndex]
+    const plot = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths']
+    //const colors = ['#ff1744', '#ff9800', '#482880', '#004d40']
+    const colo = ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
+    let index = 0;
+    plot.forEach(element => {
       let plotOptions = JSON.parse(JSON.stringify(options))
       plotOptions.title.text = sepNum(lastTotalCase[element])
       plotOptions.series[0].name = element
       plotOptions.xaxis.categories = getcolumns('date', worldData)
-      plotOptions.colors[0] = colo[plotIndex]
+      plotOptions.colors[0] = colo[index]
       plotOptions.series[0].data = getcolumns(element, worldData)
 
       var chart = new ApexCharts(document.querySelector('#'+element), plotOptions);
       chart.render();
-      plotIndex += 1
-      if (plotIndex < plot.length){ window.setTimeout(updateWorldData(covidData), 100)}
+      index += 1
+    });
   }
 
   function getcolumns(c, d){
@@ -193,12 +183,5 @@ function getCountryData(countriesCode, covidData, country){
   }
 
 
-  function updateDataTable(table){
-    $(table).DataTable({
-      "order": [[ 1, "desc" ]],
-      scrollCollapse: true,
-       paging:true,
-       "scrollX": true,
-    })
-  }
+
   
