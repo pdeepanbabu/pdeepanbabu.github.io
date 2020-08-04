@@ -195,7 +195,7 @@ function getCountryData(countriesCode, covidData, country){
     $(table).DataTable({
       "order": [[ 1, "desc" ]],
       scrollCollapse: true,
-       paging:false,
+       paging:true,
        "scrollX": true,
     })
   }
