@@ -77,7 +77,7 @@ function getCountryData(countriesCode, covidData, country){
           code = element
       }
         const d = covidData[element]['data']
-        details['weeks'] = d.slice(-21)
+        details['weeks'] = d.slice(-60)
         details['location'] = element
         details['z'] = d[d.length - 1]['total_cases']
         details['text'] = covidData[element]['location']
