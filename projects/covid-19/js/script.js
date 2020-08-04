@@ -197,7 +197,6 @@ function getCountryData(countriesCode, covidData, country){
       scrollCollapse: true,
        paging:false,
        "scrollX": true,
-       "scrollY": 600
     })
   }
   
