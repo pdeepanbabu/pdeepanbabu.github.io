@@ -1,94 +1,34 @@
-body{
-    font-family: 'Open Sans', sans-serif;
-    background-color: #fff;
-    color: #000000;
-}
-
-.main-content span{
-    color: #acb5bb;
-    font-size: x-large;
-}
-
-.main-content p{
+.main-header{
+    background-color: #2b3137;
     color: #fff;
 }
 
-.about{
-    color: #000000;
+.skills{
+    background-color: #2b3137;
 }
 
-.content-head-odd{
+.skills .content-head{
     color: #fff;
-    text-align: right;
-    font-size: large;
-    padding: 5px;
-    font-weight: bold;
-    background: rgb(255,255,255);
-    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 67%, rgba(30,136,229,1) 100%);
+    font-size: small;
+    text-decoration: underline;
 }
 
-.content-head-even{
-    color: #000000;
-    text-align: center;
-    font-size: xx-large;
-    padding: 5px;
-    font-weight: bold;
-    /* background: rgb(30,136,229); */
-    /* background: linear-gradient(90deg, rgba(30,136,229,1) 0%, rgba(255,255,255,1) 33%, rgba(255,255,255,1) 100%); */
+.skills .skills-list {
+    font-size: smaller;
+    color: hsla(0,0%,100%,.6);
 }
 
-.skills-img{
-    width:80px; 
-    height: 70px;
-    text-align: center;
+@media (max-width:500px){
+    .skills .skills-list, .skills .content-head{
+        text-align:center;
+        font-size: large;
+    }
+
+    .skills{
+        min-height: auto!important;
+    }
 }
 
-.sub-head{
-    color: #000000;
-    color: rgb(30,136,229);
+.project{
+    padding: 30px;
 }
-
-.django .link span{
-    color: green;
-}
-
-.logo-titile span{
-    font-family: 'Archivo', sans-serif;
-    font-size: x-large;
-}
-
-.area-logo{
-    font-size: 2em;
-}
-
-.banner{
-    margin-top: -59px;
-    background-color:#343a40!important;
-    color: #fff;
-    background: #C33764;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #1D2671, #C33764);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #1D2671, #C33764); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    height: 240px;;
-}
-
-.bg-info{
-    background-color:transparent!important;
-    color: #fff;
-    background: rgba(0, 172, 193, 1);  /* fallback for old browsers */
-}
-
-.main-image, .main-content{
-    margin-top: 59px;
-}
-
-.client-logo{
-    max-width: 100px;
-    padding-right: 5px;;
-    /* height: 60px; */
-}
-
-.skills-overview span{
-    color: #000000;
-}
-
-
