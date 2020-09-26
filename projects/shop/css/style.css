@@ -1,0 +1,49 @@
+.navbar-bann2er{
+    background-image: url("/projects/shop/img/banner.jpg");
+    background-repeat: no-repeat no-repeat;
+    background-size: cover;
+    background-attachment: scroll;
+    position: relative;
+    height: 960px;
+}
+
+.highlights{
+    text-align: center;
+}
+
+.highlights .icons{
+    font-size: 3.5em;
+    padding-bottom: 10px;
+}
+
+.image-special{
+    height: 250px;
+}
+
+.special-dish-heading{
+    font-size: larger;
+}
+
+.special-dish-content{
+    font-family: 'Kalam', cursive;
+}
+
+.shop-heading{
+    font-family: 'Permanent Marker', cursive;
+    color: brown;
+    font-size: 3.6em;
+}
+
+.banner{
+    background-image: url("/projects/shop/img/dish-1838975_1280.jpg");
+    background-repeat: no-repeat no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    height: 460px;
+}
+
+.main-content{
+    margin-top: 130px;
+    margin-bottom: auto;
+}
