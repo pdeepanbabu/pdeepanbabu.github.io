@@ -19,7 +19,7 @@
                             <h1 class="shop-heading">Shop</h1>
                             <h3 class="text-light">Delicious Food</h3>
                             <p class="text-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo doloremque hic quos magni soluta nam ipsa inventore molestias veniam temporibus!</p>
-                            <p><a href="#" class="btn btn-warning">Order Now!</a></p>
+                            <p><a href="#" class="btn btn-warning" data-toggle="modal" data-target="#staticBackdrop">Order Now!</a></p>
                         </div>
                         <div class="col-md-6"></div>
                     </div>
@@ -95,8 +95,36 @@
           <p>23, Lorem, ipsum dolor.</p>
           <p>Lorem, ipsum dolor.</p>
           <p>36328</p>
-
       </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Menu Selection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                    <p><a href="/projects/shop/pages/veg.html" class="text-decoration-none text-muted">
+                      <p>Vegetarian</p>
+                      <img src="/projects/shop/img/veg.jpg" alt="vegetarian-menu" class="w-50 rounded">
+                    </a></p>
+                    <p><a href="/projects/shop/pages/non-veg.html" class="text-decoration-none text-muted">
+                      <p>Non-Vegetarian</p>
+                      <img src="/projects/shop/img/non-veg.jpg" alt="non-vegetarian-menu" class="w-50 rounded">
+                    </a></p>
+                    <p><a href="#" class="text-decoration-none text-muted">
+                      <p>Dessert</p>
+                      <img src="/projects/shop/img/deserrt.jpg" alt="dessert-menu" class="w-50 rounded">
+                    </a></p>
+              </div>
+            </div>
+          </div>
+        </div>
       <footer class="footer mt-auto py-3 bg-dark">
         <div class="container text-center">
           <span class="text-muted">© 2020 | Deepan Babu</span>

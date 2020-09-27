@@ -43,6 +43,26 @@
     height: 460px;
 }
 
+.non-veg-banner{
+    background-image: url("/projects/shop/img/non-veg-banner.jpg");
+    background-repeat: no-repeat no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    height: 460px;
+}
+
+
+.veg-banner{
+    background-image: url("/projects/shop/img/veg-banner.jpg");
+    background-repeat: no-repeat no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    height: 460px;
+}
+
+
 .main-content{
     margin-top: 130px;
     margin-bottom: auto;
