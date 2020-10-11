@@ -55,3 +55,7 @@
       text-underline-position: under;
       color: #fff!important;
   }
+
+.checked {
+  color: orange;
+}
