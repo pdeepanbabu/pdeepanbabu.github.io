@@ -49,10 +49,7 @@
   }
 
   .content-heading{
-      text-decoration: underline;
-      text-decoration-color: red;
-      text-decoration-style: unset;
-      text-underline-position: under;
+      color: #fff;
   }
 
 .checked {
