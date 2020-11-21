@@ -165,7 +165,7 @@
 @media (max-width: 768px) {
 
 #banner {
-  background-color:#fff;
+  background:#fff;
   height:800px;
 }
   .carousel-inner .carousel-item > div {
